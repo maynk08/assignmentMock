@@ -7,21 +7,18 @@ const organization = new mongoose.Schema({
         required:true
     },
     
-    property:{
-       type: ObjectId,
-       required:true,
-       ref:"Property"
-    },
+   property:[{
+    type:ObjectId,
+    ref:"Property"
+   }],
 
-    founder:{
+    Owner:{
         type:String,
         required:true
     },
 
-    City:{
-        type:String,
-        required:true
-    }
+    
+  
 })
 
 module.exports = mongoose.model("Organization",organization)

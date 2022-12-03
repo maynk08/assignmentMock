@@ -2,9 +2,15 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const route = require('../src/routes/route')
-
+const passport = require('passport')
+//require("../src/Passport/passport")
 const app = express()
 app.use(bodyParser.json())
+
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 mongoose.connect("mongodb+srv://Keshav-cyber:7LizqrsG6tL39fuT@cluster0.ohm0bak.mongodb.net/newDBAgr?retryWrites=true&w=majority", {
     useNewUrlParser: true

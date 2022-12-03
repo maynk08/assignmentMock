@@ -1,5 +1,5 @@
 const property = require("../models/property")
-
+const mongoose = require("mongoose")
 
 const isValid = function (value) {
     if (typeof value === "undefined" || value === null) return false;
@@ -22,34 +22,48 @@ const createProp = async(req,res) => {
     try{
 
         const data = req.body
-        const {land,worth,region} = data
+        // const {land,worth,region} = data
 
-        if(!isValidBody(data)){
-            return res.status(400).send({status:false,msg:"All fields are mandatory"})
-        }
+        // if(!isValidBody(data)){
+        //     return res.status(400).send({status:false,msg:"All fields are mandatory"})
+        // }
 
-        if(!isValid(land)){
-            return res.status(400).send({status:false,msg:"Land must be present"})
-        }
+        // if(!isValid(land)){
+        //     return res.status(400).send({status:false,msg:"Land must be present"})
+        // }
 
-        if(!isValid(worth)){
-            return res.status(400).send({status:false,msg:"Enter worth of property"})
-        }
+        // if(!isValid(worth)){
+        //     return res.status(400).send({status:false,msg:"Enter worth of property"})
+        // }
 
-        if(!isValid(region)){
-            return res.status(400).send({status:false,msg:"Enter region"})
-        }
+        // // if(!isValid(region)){
+        // //     return res.status(400).send({status:false,msg:"Enter region"})
+        // // }
 
-        if(!isValidObjectId(region)){
-            return res.status(400).send({status:false,msg:"Enter valid object id for region"})
-        }
+        // // if(!isValidObjectId(region)){
+        // //     return res.status(400).send({status:false,msg:"Enter valid object id for region"})
+        // // }
 
 
         const createData = await property.create(data)
-        return res.status(400).send({status:false,msg:createData})
+        return res.status(201).send({status:true,msg:createData})
 
     }
     catch(err){
-        return res.status(400).send({status:false,msg:err})
+        console.log(err)
+        return res.status(500).send({status:false,msg:err})
     }
 }
+
+
+/*============================================================================================================================================================*/
+
+
+const getProp = async(req,res) => {
+    const getData = await property.find()
+
+    return res.status(200).send({status:true,data: getData})
+
+}
+
+module.exports = {createProp,getProp}
