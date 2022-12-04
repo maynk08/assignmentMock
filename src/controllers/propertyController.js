@@ -22,27 +22,24 @@ const createProp = async(req,res) => {
     try{
 
         const data = req.body
-        // const {land,worth,region} = data
+        const {region,worth} = data
 
-        // if(!isValidBody(data)){
-        //     return res.status(400).send({status:false,msg:"All fields are mandatory"})
-        // }
+        if(!isValidBody(data)){
+            return res.status(400).send({status:false,msg:"All fields are mandatory"})
+        }
 
-        // if(!isValid(land)){
-        //     return res.status(400).send({status:false,msg:"Land must be present"})
-        // }
 
-        // if(!isValid(worth)){
-        //     return res.status(400).send({status:false,msg:"Enter worth of property"})
-        // }
+        if(!isValid(region)){
+            return res.status(400).send({status:false,msg:"Enter region"})
+        }
 
-        // // if(!isValid(region)){
-        // //     return res.status(400).send({status:false,msg:"Enter region"})
-        // // }
+        if(!isValid(worth)){
+            return res.status(400).send({status:false,msg:"Enter worth of property"})
+        }
 
-        // // if(!isValidObjectId(region)){
-        // //     return res.status(400).send({status:false,msg:"Enter valid object id for region"})
-        // // }
+        if(!isValidObjectId(region)){
+            return res.status(400).send({status:false,msg:"Enter valid object id for region"})
+        }
 
 
         const createData = await property.create(data)
@@ -60,9 +57,19 @@ const createProp = async(req,res) => {
 
 
 const getProp = async(req,res) => {
-    const getData = await property.find()
+    try{
+        const data = await property.find()
 
-    return res.status(200).send({status:true,data: getData})
+        if(data.length==0){
+            return res.status(404).send({msg:"No data found !"})
+        }
+        
+        return res.status(200).send({status:true,data:data})
+    }
+    catch(err){
+        return res.status(500).send({status:false,msg:err})
+    }
+
 
 }
 

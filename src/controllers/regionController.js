@@ -1,5 +1,6 @@
 const regionModel = require("../models/region")
 const mongoose = require('mongoose')
+
 const isValid = function (value) {
     if (typeof value === "undefined" || value === null) return false;
     if (typeof value === "string" && value.trim().length === 0) return false;
@@ -21,29 +22,32 @@ const isValidObjectId = function (ObjectId) {
 const createRegion = async(req,res) => {
 
     try{
-    const data = req.body
-    //console.log(data)
-    const{field,State,Country} = data
+   
+        const data = req.body
 
-    if(!isValidBody(data)){
-        return res.statu(400).send({status:false,msg:"Input data"})
-    }
+        if(!isValidBody(data)){
+            return res.status(400).send({status:false,msg:"Enter data !"})
+        }
 
-    if(!isValid(field)){
-        return res.status(400).send({status:false,msg:"Enter field details"})
-    }
+        const {location,climate} = data
+        const {field} = location
 
-    if(!isValidObjectId(field)){
-        return res.status(400).send({status:false,msg:"Enter valid object id"})
-    }
+        if(!isValid(location)){
+            return res.status(400).send({status:false,msg:"Enter location"})
+        }
 
-    if(!isValid(State)){
-        return res.status(400).send({status:false,msg:"Enter state name"})
-    }
+        if(!isValid(field)){
+            return res.status(400).send({status:false,msg:"Enter field"})
+        }
 
-    if(!isValid(Country)){
-        return res.status(400).send({status:false,msg:"Enter country name"})
-    }
+        if(!isValid(climate)){
+            return res.status(400).send({status:false,msg:"Enter climate"})
+        }
+
+        if(["Moderate","Extreme"].indexOf(climate)==-1){
+            return res.status(400).send({status:false,msg:"Value can be either Moderate or Extreme "})
+        }
+     
 
     const createReg = await regionModel.create(data)
     //console.log(createReg)
@@ -57,4 +61,22 @@ catch(err){
 
 
 
-module.exports = {createRegion}
+/*============================================================================================================================================================*/
+
+
+const getRegion = async(req,res) => {
+    try{
+
+        let data = await regionModel.find()
+        if(data.length==0){
+            return res.status(404).send({msg:"No data found !"})
+        }
+        return res.status(200).send({status:true,data:data})
+    }
+    catch(err){
+        return res.status(500).send({status:false,msg:err})
+    }
+}
+
+
+module.exports = {createRegion,getRegion}

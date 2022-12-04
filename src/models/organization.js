@@ -15,9 +15,8 @@ const organization = new mongoose.Schema({
     Owner:{
         type:String,
         required:true
-    },
+    }
 
-    
   
 })
 
